@@ -1,35 +1,18 @@
-HELP.md
-.gradle
-build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
 *.iml
 *.ipr
+*.iws
+*.pyc
+*.swp
+.gradle/
+.java-version
+/.idea/*
+!/.idea/codeStyleSettings.xml
+!/.idea/inspectionProfiles/
+build
+classes/
+docker/artifact/
+docker/config/pacts/
 out/
-!**/src/main/**/out/
-!**/src/test/**/out/
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-
-### VS Code ###
-.vscode/
-
+pacts/
+scripts/roundtrip-custom-request/trips/
+target/
