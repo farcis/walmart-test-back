@@ -27,18 +27,21 @@ dependencies {
 
 	compile 'javax.json:javax.json-api:1.0'
 	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
-	compile group: 'org.mongodb', name: 'mongo-java-driver', version: '3.11.1'
 
 	annotationProcessor 'org.projectlombok:lombok'
 
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'junit', module: 'junit'
+	}
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 	testCompile('org.mockito:mockito-junit-jupiter:2.23.4')
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
+
 }
 
 test {
 	useJUnitPlatform()
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
 }

@@ -1,0 +1,12 @@
+#server:
+#  servlet:
+#    contextPath: "/ws/api/v1/"
+
+spring:
+  data:
+    mongodb:
+      host: "localhost"
+      port: 27017
+      database: promotions
+#  application:
+#    name: wallmart-test-back
