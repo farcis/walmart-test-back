@@ -2,42 +2,45 @@ package com.walmart.walmarttestback.services;
 
 import com.walmart.walmarttestback.models.Product;
 import com.walmart.walmarttestback.repository.ProductRepository;
+import com.walmart.walmarttestback.services.strategies.ISearchStrategy;
+import com.walmart.walmarttestback.services.factories.SearchFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class ProductService {
 
     @Autowired
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     @Autowired
-    IDiscountService discountService;
+    private IDiscountService discountService;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, IDiscountService discountService) {
+    private ISearchStrategy searchStrategy;
+
+    @Autowired
+    private SearchFactory searchFactory;
+
+    @Autowired
+    public ProductService(ProductRepository productRepository, IDiscountService discountService, ISearchStrategy searchStrategy, SearchFactory searchFactory) {
         this.productRepository = productRepository;
         this.discountService = discountService;
+        this.searchStrategy = searchStrategy;
+        this.searchFactory = searchFactory;
     }
 
     public List<Product> getProducts(String searchQuery) {
-        List<Product> products = new ArrayList<>();
-
-        if(searchQuery.matches("\\d+")) {
-            Optional<Product> product = productRepository.findById(Integer.parseInt(searchQuery));
-            if (product.isPresent()) {
-                products.add(product.get());
-            }
-        }
-        else if(searchQuery.length() > 3){
-            products = productRepository.findByDescriptionLikeOrBrandLike(searchQuery,searchQuery);
+        if (searchQuery == null || searchQuery.isEmpty()) {
+            throw new IllegalArgumentException("Invalid " + searchQuery);
         }
 
-        discountService.apply(searchQuery, products);
+        searchStrategy = searchFactory.getSearchStrategy(searchQuery);
+        List<Product> products = searchStrategy.search(searchQuery);
+        products = discountService.getProductsWithDiscount(searchQuery, products);
 
         return products;
     }

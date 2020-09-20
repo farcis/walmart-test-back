@@ -6,7 +6,7 @@ import java.util.List;
 
 public class PalindromeDiscountService implements IDiscountService {
     @Override
-    public void apply(String searchQuery, List<Product> products) {
+    public List<Product> getProductsWithDiscount(String searchQuery, List<Product> products) {
         final float DiscountPercentage  = 50;
 
         if (isPalindrome(searchQuery)){
@@ -16,6 +16,8 @@ public class PalindromeDiscountService implements IDiscountService {
             });
 
         }
+
+        return products;
     }
 
     private boolean isPalindrome(String str) {

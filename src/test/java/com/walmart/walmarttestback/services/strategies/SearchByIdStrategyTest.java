@@ -1,27 +1,31 @@
-package com.walmart.walmarttestback.services;
+package com.walmart.walmarttestback.services.strategies;
 
 import com.walmart.walmarttestback.models.Product;
+import com.walmart.walmarttestback.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class PalindromeDiscountServiceTest {
-
+public class SearchByIdStrategyTest {
     @InjectMocks
-    private PalindromeDiscountService palindromeDiscountService;
+    SearchByIdStrategy searchByIdStrategy;
 
-    private String searchQuery;
+    @Mock
+    ProductRepository productRepository;
 
     private int id;
     private String brand;
@@ -39,24 +43,25 @@ public class PalindromeDiscountServiceTest {
     }
 
     @Test
-    public void shouldReturnFiftyPercentDiscountWhenSearchQueryIsPalindrome() {
-        Product product = products.get(0);
-        int expectedFinalPrice = (product.getPrice()*50)/100;
-        searchQuery="1001";
+    public void shouldCallProductRepository() {
+        String searchQuery="12234";
 
-        List<Product> discountProducts = palindromeDiscountService.getProductsWithDiscount(searchQuery,products);
+        List<Product> products = searchByIdStrategy.search(searchQuery);
 
-        assertThat(discountProducts.get(0), hasProperty("finalPrice",is(expectedFinalPrice)));
+        verify(productRepository).findById(Integer.parseInt(searchQuery));
     }
 
     @Test
-    public void shouldReturnWithoutDiscountWhenSearchQueryIsNotPalindrome() {
-        searchQuery="hola";
+    public void shouldCallProductRepositoryAndReturnAListOfProduct() {
+        String searchQuery="12234";
         Product product = returnNewProduct();
+        List<Product> expectedProducts = new ArrayList<>(Arrays.asList(product));
 
-        List<Product> discountProducts = palindromeDiscountService.getProductsWithDiscount(searchQuery,products);
+        when(productRepository.findById(Integer.valueOf(searchQuery))).thenReturn(Optional.of(product));
 
-        assertEquals(discountProducts.get(0), product);
+        List<Product> products = searchByIdStrategy.search(searchQuery);
+
+        assertThat(products.get(0),is(expectedProducts.get(0)));
     }
 
     private Product returnNewProduct(){
