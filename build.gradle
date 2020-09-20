@@ -2,6 +2,8 @@ plugins {
 	id 'org.springframework.boot' version '2.3.3.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
+	id 'idea'
+	id 'eclipse'
 }
 
 group = 'com.walmart'
@@ -19,29 +21,61 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
 
 	compile 'javax.json:javax.json-api:1.0'
+
 	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
 
-	annotationProcessor 'org.projectlombok:lombok'
-
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'junit', module: 'junit'
-	}
-	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
-	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.0'
+	testCompile ('org.junit.jupiter:junit-jupiter:5.6.0')
 	testCompile('org.mockito:mockito-junit-jupiter:2.23.4')
 
+}
+
+compileJava {
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+}
+
+sourceSets {
+	integrationTest {
+		java {
+			srcDir 'src/integrationTest/java'
+		}
+		resources {
+			srcDir 'src/integrationTest/resources'
+		}
+		compileClasspath += sourceSets.main.runtimeClasspath
+		compileClasspath += sourceSets.test.compileClasspath
+		runtimeClasspath = output + compileClasspath
+	}
 }
 
 test {
 	useJUnitPlatform()
 	testLogging {
 		events "passed", "skipped", "failed"
+	}
+}
+
+task integrationTest(type: Test){
+	useJUnitPlatform()
+	description = "Runs Integration Tests"
+	testClassesDirs = sourceSets.integrationTest.output.classesDirs
+	classpath = sourceSets.integrationTest.runtimeClasspath
+	configure {
+		systemProperties = [
+				'spring.profiles.active': 'int'
+		]
 	}
 }
