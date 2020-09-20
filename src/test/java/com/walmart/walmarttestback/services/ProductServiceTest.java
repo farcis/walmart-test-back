@@ -18,6 +18,7 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,6 +29,9 @@ class ProductServiceTest {
 
     @Mock
     private ProductRepository productRepository;
+
+    @Mock
+    private IDiscountService discountService;
 
     private String searchQuery;
 
@@ -82,18 +86,6 @@ class ProductServiceTest {
         List<Product> products = productService.getProducts(searchQuery);
 
         assertThat(products.size(),is(0));
-    }
-
-    @Test
-    public void shouldReturnProductWithDiscountWhenSearchQueryIsAPalindromeNumeric() {
-        searchQuery = "1001";
-        int expectedPrice =  product.getPrice()/2;
-
-        when(productRepository.findById(eq(Integer.parseInt(searchQuery)))).thenReturn(Optional.of(product));
-
-        List<Product> products = productService.getProducts(searchQuery);
-
-        assertThat(products.get(0).getPrice(),is(expectedPrice));
     }
 
     @Test

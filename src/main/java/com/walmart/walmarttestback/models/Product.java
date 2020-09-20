@@ -19,4 +19,17 @@ public class Product{
 
     private String image;
     private int price;
+
+    private float discount;
+    private int finalPrice;
+
+    public Product(int id, String brand, String description, String image, int price) {
+        this.id=id;
+        this.brand=brand;
+        this.description=description;
+        this.image=image;
+        this.price=price;
+    }
+
+
 }

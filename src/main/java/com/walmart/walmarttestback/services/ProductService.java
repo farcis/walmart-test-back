@@ -16,37 +16,30 @@ public class ProductService {
     ProductRepository productRepository;
 
     @Autowired
-    public ProductService(ProductRepository productRepository) {
+    IDiscountService discountService;
+
+    @Autowired
+    public ProductService(ProductRepository productRepository, IDiscountService discountService) {
         this.productRepository = productRepository;
+        this.discountService = discountService;
     }
 
     public List<Product> getProducts(String searchQuery) {
-        List<Product> productList = new ArrayList<>();
+        List<Product> products = new ArrayList<>();
 
-        if(searchQuery.matches("\\d+")){
+        if(searchQuery.matches("\\d+")) {
             Optional<Product> product = productRepository.findById(Integer.parseInt(searchQuery));
             if (product.isPresent()) {
-                productList.add(product.get());
+                products.add(product.get());
             }
         }
         else if(searchQuery.length() > 3){
-            productList = productRepository.findByDescriptionLikeOrBrandLike(searchQuery,searchQuery);
+            products = productRepository.findByDescriptionLikeOrBrandLike(searchQuery,searchQuery);
         }
 
-        if(isPalindrome(searchQuery)){
-            productList.forEach((item) -> item.setPrice(item.getPrice()/2));
-        }
+        discountService.apply(searchQuery, products);
 
-        return productList;
+        return products;
     }
 
-    private boolean isPalindrome(String str) {
-        int n = str.length();
-        for (int i = 0; i < n/2; ++i) {
-            if (str.charAt(i) != str.charAt(n-i-1)){
-                return false;
-            }
-        }
-        return true;
-    }
 }
