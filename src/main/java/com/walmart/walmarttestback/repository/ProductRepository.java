@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository extends MongoRepository<Product,Integer> {
-    Optional<Product> findByDescriptionLikeOrBrandLike(String description, String brand);
+    List<Product> findByDescriptionLikeOrBrandLike(String description, String brand);
 }

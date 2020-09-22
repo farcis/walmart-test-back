@@ -11,15 +11,18 @@ clean:
 	$(gradle_cmd) clean
 
 run: assemble
-	java -jar build/libs/*.jar
+	$(gradle_cmd) bootRun
 
 unit-test:
 	$(gradle_cmd) test
 
-#integration-test:
+integration-test:
+	$(gradle_cmd) cleanIntegrationTest integrationTest
+
+test: unit-test integration-test
 
 docker:
-	docker build -t backendservice .
+	docker build -t wallmart-test-back .
 
 docker-build-tasker:
 	docker build \
@@ -40,6 +43,8 @@ docker-unit-test: docker-run
 	$(gradle_cmd) test
 
 #docker-integration-test:
+
+
 
 
 

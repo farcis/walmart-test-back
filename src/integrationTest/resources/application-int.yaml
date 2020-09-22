@@ -6,7 +6,4 @@ spring:
   data:
     mongodb:
       uri: mongodb://productListUser:productListPassword@localhost:27017/promotions?authSource=admin&retryWrites=true
-logging:
-  level:
-    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
 

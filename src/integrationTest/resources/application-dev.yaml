@@ -10,6 +10,3 @@ logging:
   level:
     org.springframework.data.mongodb.core.MongoTemplate: DEBUG
 
-
-#  application:
-#    name: wallmart-test-back

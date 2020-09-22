@@ -1,23 +1,15 @@
 package com.walmart.walmarttestback.services;
 
 import com.walmart.walmarttestback.models.Product;
-import com.walmart.walmarttestback.repository.ProductRepository;
-import com.walmart.walmarttestback.services.strategies.ISearchStrategy;
 import com.walmart.walmarttestback.services.factories.SearchFactory;
+import com.walmart.walmarttestback.services.strategies.ISearchStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Service
 public class ProductService {
-
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
-    private IDiscountService discountService;
 
     @Autowired
     private ISearchStrategy searchStrategy;
@@ -26,8 +18,11 @@ public class ProductService {
     private SearchFactory searchFactory;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, IDiscountService discountService, ISearchStrategy searchStrategy, SearchFactory searchFactory) {
-        this.productRepository = productRepository;
+    private IDiscountService discountService;
+
+
+    @Autowired
+    public ProductService(ISearchStrategy searchStrategy, SearchFactory searchFactory, IDiscountService discountService) {
         this.discountService = discountService;
         this.searchStrategy = searchStrategy;
         this.searchFactory = searchFactory;
@@ -37,6 +32,8 @@ public class ProductService {
         if (searchQuery == null || searchQuery.isEmpty()) {
             throw new IllegalArgumentException("Invalid " + searchQuery);
         }
+
+        searchQuery = searchQuery.toLowerCase();
 
         searchStrategy = searchFactory.getSearchStrategy(searchQuery);
         List<Product> products = searchStrategy.search(searchQuery);

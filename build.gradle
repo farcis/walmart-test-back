@@ -16,6 +16,14 @@ configurations {
 	}
 }
 
+bootRun {
+	environment SPRING_PROFILES_ACTIVE: environment.SPRING_PROFILES_ACTIVE ?: "dev"
+}
+
+test {
+	environment SPRING_PROFILES_ACTIVE: environment.SPRING_PROFILES_ACTIVE ?: "test"
+}
+
 repositories {
 	mavenCentral()
 }
@@ -36,9 +44,11 @@ dependencies {
 	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
 
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
-	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.0'
+	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.6.0'
 	testCompile ('org.junit.jupiter:junit-jupiter:5.6.0')
 	testCompile('org.mockito:mockito-junit-jupiter:2.23.4')
+	testCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.5'
+	//testCompile group: "de.flapdoodle.embed", name: "de.flapdoodle.embed.mongo", version: "2.2.0"
 
 }
 

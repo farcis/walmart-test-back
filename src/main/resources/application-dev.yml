@@ -1,0 +1,25 @@
+server:
+  servlet:
+    contextPath: "/ws/api/v1/"
+
+spring:
+  spring:
+    profiles: development
+  data:
+    application:
+      name: walmart-test-back
+    mongodb:
+      uri: mongodb+srv://productListUser:productListPassword@cluster0.2sdpc.mongodb.net/promotions?retryWrites=true&w=majority
+
+management:
+  context-path: /admin
+  server:
+    add-application-context-header: false
+    endpoints:
+      web:
+        base-path: /private
+        enabled: false
+        health:
+          enabled: true
+          path: /health
+          sensitive: false

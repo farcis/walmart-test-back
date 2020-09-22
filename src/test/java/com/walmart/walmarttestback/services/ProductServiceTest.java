@@ -71,19 +71,6 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void shouldReturnAListOfProductsWhenSearchQueryIsAlphaNumericGreaterThanThree(){
-        searchQuery="A Brand";
-
-        when(searchFactory.getSearchStrategy(eq(searchQuery))).thenReturn(searchByAllFieldsStrategy);
-        when(searchByAllFieldsStrategy.search(eq(searchQuery))).thenReturn(expectedProducts);
-        when(discountService.getProductsWithDiscount(eq(searchQuery),eq(expectedProducts))).thenReturn(expectedProducts);
-
-        List<Product> products = productService.getProducts(searchQuery);
-
-        assertTrue(products.containsAll(expectedProducts));
-    }
-
-    @Test
     public void shouldReturnAListOfProductsWithDiscountWhenSearchQueryPalindrome(){
         searchQuery="abba";
         int finalPrice = (product.getPrice()*50)/100;

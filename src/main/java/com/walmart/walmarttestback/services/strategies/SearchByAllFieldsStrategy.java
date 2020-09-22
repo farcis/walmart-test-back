@@ -3,23 +3,25 @@ package com.walmart.walmarttestback.services.strategies;
 import com.walmart.walmarttestback.models.Product;
 import com.walmart.walmarttestback.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+@Component
+@Qualifier("searchByAllFieldsStrategyClass")
 public class SearchByAllFieldsStrategy implements ISearchStrategy {
 
     @Autowired
     ProductRepository productRepository;
 
+    @Autowired
+    public SearchByAllFieldsStrategy(ProductRepository productRepository){
+        this.productRepository = productRepository;
+    }
+
     @Override
     public List<Product> search(String searchQuery) {
-        List<Product> products = new ArrayList<>();
-        Optional<Product> productsOptional = productRepository.findByDescriptionLikeOrBrandLike(searchQuery,searchQuery);
-        if (productsOptional.isPresent()) {
-            products.add(productsOptional.get());
-        }
-        return products;
+        return productRepository.findByDescriptionLikeOrBrandLike(searchQuery,searchQuery);
     }
 }

@@ -57,7 +57,7 @@ public class SearchByAllFieldsStrategyTest {
         Product product = returnNewProduct();
         List<Product> expectedProducts = new ArrayList<>(Arrays.asList(product));
 
-        when(productRepository.findByDescriptionLikeOrBrandLike(searchQuery,searchQuery)).thenReturn(Optional.of(product));
+        when(productRepository.findByDescriptionLikeOrBrandLike(searchQuery,searchQuery)).thenReturn(expectedProducts);
 
         List<Product> products = searchByAllFieldsStrategy.search(searchQuery);
 
