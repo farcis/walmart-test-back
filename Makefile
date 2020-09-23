@@ -42,7 +42,9 @@ docker-run: docker-build-tasker
 docker-unit-test: docker-run
 	$(gradle_cmd) test
 
-#docker-integration-test:
+docker-integration-test: docker-run
+	$(gradle_cmd) cleanIntegrationTest integrationTest
+
 
 
 

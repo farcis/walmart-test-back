@@ -47,11 +47,23 @@ public class PalindromeDiscountServiceTest {
         List<Product> discountProducts = palindromeDiscountService.getProductsWithDiscount(searchQuery,products);
 
         assertThat(discountProducts.get(0), hasProperty("finalPrice",is(expectedFinalPrice)));
+        assertThat(discountProducts.get(0).getDiscount(), is((float)50));
+        assertThat(discountProducts.get(0).getFinalPrice(), is(5000));
     }
 
     @Test
     public void shouldReturnWithoutDiscountWhenSearchQueryIsNotPalindrome() {
         searchQuery="hola";
+        Product product = returnNewProduct();
+
+        List<Product> discountProducts = palindromeDiscountService.getProductsWithDiscount(searchQuery,products);
+
+        assertEquals(discountProducts.get(0), product);
+    }
+
+    @Test
+    public void shouldReturnWithoutDiscountWhenSearchQueryIsPalindromeLenghtLessThanThree() {
+        searchQuery="11";
         Product product = returnNewProduct();
 
         List<Product> discountProducts = palindromeDiscountService.getProductsWithDiscount(searchQuery,products);

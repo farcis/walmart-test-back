@@ -21,13 +21,14 @@ public class PalindromeDiscountService implements IDiscountService {
                 item.setDiscount(DiscountPercentage);
                 item.setFinalPrice((int) ((item.getPrice() * DiscountPercentage) / 100));
             });
-
         }
 
         return products;
     }
 
     private boolean isPalindrome(String str) {
+        if(str.length() < 3) return false;
+
         int n = str.length();
         for (int i = 0; i < n/2; ++i) {
             if (str.charAt(i) != str.charAt(n-i-1)){
