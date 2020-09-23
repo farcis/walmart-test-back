@@ -1,7 +1,7 @@
 # Walmart Test Back
 
 Este proyecto es un backend endpoint desarrollado como prueba para Walmart.
-Esta construido en Java Spring Boot y se puede ver en Heroku a traves de la siguiente [URL](https://ancient-hamlet-74305.herokuapp.com/ws/api/v1/search/query) 
+Esta construido en Java Spring Boot y se puede ver en Heroku a traves de la siguiente [URL](https://vast-beyond-44426.herokuapp.com/ws/api/v1/search/123) 
 
 Por debajo se conecta a una Base de datos Mongo.
 
